@@ -19,6 +19,7 @@ def login(window, driver) -> None:
 
     if is_login:
         driver.get("https://www.dhlottery.co.kr/user.do?method=logout&returnUrl=")
+        balance = 0
     else:
         driver.get("https://www.dhlottery.co.kr/user.do?method=login&returnUrl=")
 
@@ -39,12 +40,12 @@ def login(window, driver) -> None:
 
         balance = get_balance(driver).replace(",", "")[:-1]
 
-        window.ui.pushButton_login.setText("로그아웃")
-        window.ui.lineEdit_id.setEnabled(is_login)
-        window.ui.lineEdit_password.setEnabled(is_login)
-        window.ui.spinBox_count.setEnabled(not is_login)
-        window.ui.pushButton_buy.setEnabled(not is_login)
-        window.ui.lcdNumber_balance.setProperty("value", int(balance))
+    window.ui.pushButton_login.setText("로그인" if is_login else "로그아웃")
+    window.ui.lineEdit_id.setEnabled(is_login)
+    window.ui.lineEdit_password.setEnabled(is_login)
+    window.ui.spinBox_count.setEnabled(not is_login)
+    window.ui.pushButton_buy.setEnabled(not is_login)
+    window.ui.lcdNumber_balance.setProperty("value", int(balance))
 
 
 def get_balance(driver) -> str:
