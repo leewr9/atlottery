@@ -20,6 +20,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         self.ui.pushButton_login.clicked.connect(partial(bot.login, self, driver))
+        self.ui.pushButton_buy.clicked.connect(partial(bot.buy, self, driver))
 
 
 if __name__ == "__main__":
