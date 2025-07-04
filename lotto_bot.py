@@ -53,7 +53,7 @@ def buy(window, driver, quantity: int = 5) -> None:
         driver.execute_script("arguments[0].click();", auto_button)
 
         select = Select(driver.find_element(By.ID, "amoundApply"))
-        select.select_by_value(str(quantity))
+        select.select_by_value(str(window.ui.spinBox_count.text()))
 
         select_button = driver.find_element(By.ID, "btnSelectNum")
         driver.execute_script("arguments[0].click();", select_button)
