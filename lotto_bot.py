@@ -67,8 +67,8 @@ def buy(window, driver, quantity: int = 5) -> None:
         display_value = buy_report.value_of_css_property("display")
 
         if display_value == "none":
-            recommend = driver.find_element(By.CSS_SELECTOR, "p.cont1")
-            QMessageBox.warning(window, "구매 실패", recommend.text)
+            fail_element = driver.find_element(By.CSS_SELECTOR, "p.cont1")
+            QMessageBox.warning(window, "구매 실패", fail_element.text)
             return
     except (TimeoutException, NoSuchElementException) as e:
         QMessageBox.warning(window, "구매 실패", f"구매 중 오류가 발생했습니다:\n{e}")
@@ -122,7 +122,6 @@ def login(window, driver) -> None:
             )
             return
 
-    # UI 상태 업데이트
     window.ui.pushButton_login.setText("로그인" if is_logged_in else "로그아웃")
     window.ui.lineEdit_id.setEnabled(is_logged_in)
     window.ui.lineEdit_password.setEnabled(is_logged_in)
