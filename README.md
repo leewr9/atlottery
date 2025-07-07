@@ -5,8 +5,8 @@ This is a Korean automatic lottery purchase program. Built with a PySide6-based 
 ## Installation
 1. **Clone the repository**
     ```bash
-    git clone https://github.com/leewr9/leewr9.github.io.git
-    cd leewr9.github.io
+    git clone https://github.com/leewr9/atlottery.git
+    cd atlottery
     ```
 
 2. **Install dependencies via uv**
