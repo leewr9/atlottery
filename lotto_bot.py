@@ -39,7 +39,31 @@ def get_balance(driver) -> str | None:
         return None
 
 
-def buy(window, driver, quantity: int = 5) -> None:
+def get_purchase_history(driver) -> str | None:
+    """
+    Retrieve the user's purchase history from the lotto page.
+    Returns a formatted string of purchase history.
+    """
+    message = ""
+
+    try:
+        for block in driver.find_elements(By.CSS_SELECTOR, "div.date-info ul li"):
+            message += block.text + "\n"
+        
+        message += "\n"
+        nums = driver.find_elements(By.CSS_SELECTOR, "div.selected ul li .nums")
+        for i, num in enumerate(nums):
+            spans = num.find_elements(By.CSS_SELECTOR, "span span")
+            label = chr(65 + i)
+            line = "   ".join([f"{int(span.text):>3}" for span in spans])
+            message += f"{label}      {line}\n"
+
+        return message
+    except TimeoutException:
+        return None
+
+
+def buy(window, driver) -> None:
     """
     Automate lotto purchase process.
     Shows warning dialog if purchase fails.
@@ -70,6 +94,17 @@ def buy(window, driver, quantity: int = 5) -> None:
             fail_element = driver.find_element(By.CSS_SELECTOR, "p.cont1")
             QMessageBox.warning(window, "구매 실패", fail_element.text)
             return
+        else:
+            message = get_purchase_history(driver)
+            if message is None:
+                QMessageBox.warning(
+                    window, "구매 실패", "구매 내역을 가져올 수 없습니다."
+                )
+                return
+            
+            QMessageBox.information(window, "구매 성공", message)
+            balance = get_balance(driver).replace(",", "")[:-1]
+            window.ui.lcdNumber_balance.setProperty("value", int(balance))
     except (TimeoutException, NoSuchElementException) as e:
         QMessageBox.warning(window, "구매 실패", f"구매 중 오류가 발생했습니다:\n{e}")
 
