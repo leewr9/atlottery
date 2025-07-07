@@ -13,11 +13,19 @@ import lotto_bot as bot
 from main_ui import Ui_atlottery
 
 
+def resource_path(relative_path):
+    if hasattr(sys, "_MEIPASS"):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
+
 class MainWindow(QMainWindow):
     def __init__(self, driver):
         super().__init__()
         self.setWindowTitle("자동구매 | 동행복권")
-        self.setWindowIcon(QIcon(os.path.join("resources", "favicon.ico")))
+        self.setWindowIcon(QIcon(resource_path("resources/favicon.ico")))
 
         self.ui = Ui_atlottery()
         self.ui.setupUi(self)
