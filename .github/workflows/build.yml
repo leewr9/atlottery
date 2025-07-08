@@ -2,13 +2,17 @@ name: Build and Release
 
 on:
   workflow_dispatch:
-
+    inputs:
+      tag_name:
+        description: "Release tag (e.g. v1.0.0)"
+        required: true
+        default: "v1.0.0"
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  build-release:
   
     runs-on: ubuntu-latest
 
@@ -26,7 +30,7 @@ jobs:
     - name: Sync dependencies with uv
       run: |
         uv sync
-    - name: uv run
+    - name: Build with PyInstaller
       run: uv run pyinstaller atlottery.spec
         
     - name: Archive build output
@@ -37,6 +41,7 @@ jobs:
     - name: Upload Release to GitHub
       uses: softprops/action-gh-release@v2
       with:
+        tag_name: ${{ github.event.inputs.tag_name }}
         files: atlottery.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
