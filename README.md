@@ -2,6 +2,8 @@
 
 This is a Korean automatic lottery purchase program. Built with a PySide6-based GUI and Selenium, it enables automatic lottery ticket buying without the need for a separate web browser.
 
+![](resources/main.png)
+
 ## Installation
 1. **Clone the repository**
     ```bash
@@ -10,14 +12,14 @@ This is a Korean automatic lottery purchase program. Built with a PySide6-based 
     ```
 
 2. **Install dependencies via uv**
-```bash
-uv sync
-```
+    ```bash
+    uv sync
+    ```
 
 3. **Run the application**
-```bash
-uv run python main.py
-```
+    ```bash
+    uv run python main.py
+    ```
 
 ## Building Executable
 To build the executable file using PyInstaller and the spec file
