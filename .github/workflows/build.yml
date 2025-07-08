@@ -36,8 +36,8 @@ jobs:
     - name: Archive build output
       run: |
         mkdir release
-        cp -r dist/* release/
-        zip -r atlottery.zip release/
+        xcopy /E /I dist release
+        Compress-Archive -Path release\* -DestinationPath atlottery.zip
     - name: Upload Release to GitHub
       uses: softprops/action-gh-release@v2
       with:
