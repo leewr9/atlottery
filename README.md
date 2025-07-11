@@ -27,7 +27,7 @@ This is a Korean automatic lottery purchase program. Built with a PySide6-based 
 To build the executable file using PyInstaller and the spec file
 
 ```bash
-uv run pyinstaller .\atlottery.spec
+uv run pyinstaller ./atlottery.spec
 ```
 - This will create the executable in the `dist` folder.
 - Make sure the `atlottery.spec` file is properly configured with resource paths and build options.
