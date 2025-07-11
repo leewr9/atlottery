@@ -31,3 +31,6 @@ uv run pyinstaller .\atlottery.spec
 ```
 - This will create the executable in the `dist` folder.
 - Make sure the `atlottery.spec` file is properly configured with resource paths and build options.
+
+## License  
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.  
