@@ -71,6 +71,10 @@ def buy(window, driver) -> None:
     driver.get("https://ol.dhlottery.co.kr/olotto/game/game645.do")
 
     wait = WebDriverWait(driver, 10)
+    balance = window.ui.lcdNumber_balance.value()
+    if int(balance) <= 0:
+        QMessageBox.warning(window, "예치금 부족", "예치금이 부족합니다. 충전 후 다시 시도해주세요.")
+        return
 
     try:
         auto_button = wait.until(EC.element_to_be_clickable((By.ID, "num2")))
@@ -91,7 +95,10 @@ def buy(window, driver) -> None:
         display_value = buy_report.value_of_css_property("display")
 
         if display_value == "none":
-            fail_element = driver.find_element(By.CSS_SELECTOR, "p.cont1")
+            fail_element = driver.find_element(By.CSS_SELECTOR, "#recommend720Plus > div > div.status > p.cont1")
+            if not fail_element.text:
+                fail_element = driver.find_element(By.CSS_SELECTOR, "#popupLayerAlert > div > div.noti > span")
+
             QMessageBox.warning(window, "구매 실패", fail_element.text)
             return
         else:
@@ -137,6 +144,8 @@ def login(window, driver) -> None:
             )
 
             driver.execute_script("check_if_Valid3();")
+            import time
+            time.sleep(1)
 
             alert_text = handle_alert(driver)
             if alert_text is not None:
