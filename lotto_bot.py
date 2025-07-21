@@ -61,7 +61,25 @@ def get_purchase_history(driver) -> str | None:
         return message
     except TimeoutException:
         return None
+    
 
+def refresh(window, driver) -> str | None:
+    """
+    Update balance display by retrieving current balance.
+    Shows error if balance is missing or retrieval fails.
+    """
+    try:
+        balance = get_balance(driver)
+        if balance is None:
+            raise Exception("Balance retrieval failed: None returned from get_balance()")
+        balance = balance.replace(",", "")[:-1]
+
+        window.ui.lcdNumber_balance.setProperty("value", int(balance))
+        window.ui.pushButton_buy.setEnabled(int(balance) > 0)
+        return True
+    except Exception:
+        return False
+    
 
 def buy(window, driver) -> None:
     """
@@ -110,8 +128,7 @@ def buy(window, driver) -> None:
                 return
             
             QMessageBox.information(window, "구매 성공", message)
-            balance = get_balance(driver).replace(",", "")[:-1]
-            window.ui.lcdNumber_balance.setProperty("value", int(balance))
+            refresh(window, driver)
     except (TimeoutException, NoSuchElementException) as e:
         QMessageBox.warning(window, "구매 실패", f"구매 중 오류가 발생했습니다:\n{e}")
 
@@ -130,7 +147,6 @@ def login(window, driver) -> None:
             QMessageBox.warning(
                 window, "오류", f"로그아웃 중 오류가 발생했습니다:\n{e}"
             )
-        balance = 0
     else:
         driver.get("https://www.dhlottery.co.kr/user.do?method=login&returnUrl=")
 
@@ -152,14 +168,11 @@ def login(window, driver) -> None:
                 QMessageBox.warning(window, "로그인 실패", alert_text)
                 return
 
-            balance = get_balance(driver)
-            if balance is None:
+            if not refresh(window, driver):
                 QMessageBox.warning(
                     window, "로그인 실패", "예치금 정보를 가져올 수 없습니다."
                 )
                 return
-
-            balance = balance.replace(",", "")[:-1]
         except (NoSuchElementException, TimeoutException) as e:
             QMessageBox.warning(
                 window, "로그인 실패", f"로그인 중 오류가 발생했습니다:\n{e}"
@@ -170,5 +183,10 @@ def login(window, driver) -> None:
     window.ui.lineEdit_id.setEnabled(is_logged_in)
     window.ui.lineEdit_password.setEnabled(is_logged_in)
     window.ui.spinBox_count.setEnabled(not is_logged_in)
-    window.ui.pushButton_buy.setEnabled(not is_logged_in)
-    window.ui.lcdNumber_balance.setProperty("value", int(balance))
+    window.action_refresh.setEnabled(not is_logged_in)
+
+    if not window.ui.pushButton_buy.isEnabled():
+        QMessageBox.information(
+            window, "예치금", 
+            "예치금이 부족하여 구매할 수 없습니다.\n상단 메뉴에서 충전 후 다시 시도해 주세요."
+        )
