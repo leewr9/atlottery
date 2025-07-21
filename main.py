@@ -33,14 +33,21 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_login.clicked.connect(partial(bot.login, self, driver))
         self.ui.pushButton_buy.clicked.connect(partial(bot.buy, self, driver))
 
-        action_site = QAction("동행복권 바로가기", self)
-        action_site.triggered.connect(self.open_url)
+        self.action_site = QAction("홈페이지", self)
+        self.action_site.triggered.connect(partial(self.open_url, "https://www.dhlottery.co.kr/"))
+        self.action_payment = QAction("충전", self)
+        self.action_payment.triggered.connect(partial(self.open_url, "https://www.dhlottery.co.kr/payment.do?method=payment"))
+        self.action_refresh = QAction("새로고침", self)
+        self.action_refresh.triggered.connect(partial(bot.refresh, self, driver))
+        self.action_refresh.setEnabled(False)
 
         self.menuBar().clear()
-        self.menuBar().addAction(action_site)
+        self.menuBar().addAction(self.action_site)
+        self.menuBar().addAction(self.action_payment)
+        self.menuBar().addAction(self.action_refresh)
 
-    def open_url(self):
-        webbrowser.open("https://www.dhlottery.co.kr/")
+    def open_url(self, url):
+        webbrowser.open(url)
 
 
 if __name__ == "__main__":
