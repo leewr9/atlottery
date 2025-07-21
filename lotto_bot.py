@@ -48,14 +48,17 @@ def get_purchase_history(driver) -> str | None:
 
     try:
         for block in driver.find_elements(By.CSS_SELECTOR, "div.date-info ul li"):
+            print(block.text)
             message += block.text + "\n"
         
         message += "\n"
         nums = driver.find_elements(By.CSS_SELECTOR, "div.selected ul li .nums")
         for i, num in enumerate(nums):
             spans = num.find_elements(By.CSS_SELECTOR, "span span")
+            print(spans)
             label = chr(65 + i)
             line = "   ".join([f"{int(span.text):>3}" for span in spans])
+            print(line)
             message += f"{label}      {line}\n"
 
         return message
@@ -188,5 +191,5 @@ def login(window, driver) -> None:
     if not window.ui.pushButton_buy.isEnabled():
         QMessageBox.information(
             window, "예치금", 
-            "예치금이 부족하여 구매할 수 없습니다.\n상단 메뉴에서 충전 후 다시 시도해 주세요."
+            "예치금이 부족하여 구매할 수 없습니다.\n상단 메뉴에서 충전 후 시도해 주세요."
         )
