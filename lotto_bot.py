@@ -48,19 +48,15 @@ def get_purchase_history(driver) -> str | None:
 
     try:
         for block in driver.find_elements(By.CSS_SELECTOR, "div.date-info ul li"):
-            print(block.text)
             message += block.text + "\n"
         
         message += "\n"
         nums = driver.find_elements(By.CSS_SELECTOR, "div.selected ul li .nums")
         for i, num in enumerate(nums):
-            spans = num.find_elements(By.CSS_SELECTOR, "span span")
-            print(spans)
+            spans = num.find_elements(By.TAG_NAME, "span")
             label = chr(65 + i)
             line = "   ".join([f"{int(span.text):>3}" for span in spans])
-            print(line)
-            message += f"{label}      {line}\n"
-
+            message += f"{label}      {line}      \n"
         return message
     except TimeoutException:
         return None
