@@ -50,18 +50,13 @@ jobs:
     runs-on: windows-latest
     needs:
       - build
-    permissions:
-      id-token: write
-
-    environment:
-      name: pypi
 
     steps:
       - name: Retrieve release file
         uses: actions/download-artifact@v4
         with:
           name: release-file
-          path: atlottery.zip
+          path: .
 
       - name: Release to GitHub
         uses: softprops/action-gh-release@v2
