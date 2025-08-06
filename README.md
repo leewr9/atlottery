@@ -29,13 +29,13 @@ This is a Korean automatic lottery purchase program. Built with a PySide6-based 
    uv sync
    ```
 
-3. **Run the application**
-
-   ```bash
-   uv run python main.py.
-   ```
-
 ## Usage
+
+### Run the Application
+
+```bash
+uv run python main.py.
+```
 
 ### Build Executable
 
