@@ -49,7 +49,7 @@ def get_purchase_history(driver) -> str | None:
     try:
         for block in driver.find_elements(By.CSS_SELECTOR, "div.date-info ul li"):
             message += block.text + "\n"
-        
+
         message += "\n"
         nums = driver.find_elements(By.CSS_SELECTOR, "div.selected ul li .nums")
         for i, num in enumerate(nums):
@@ -60,7 +60,7 @@ def get_purchase_history(driver) -> str | None:
         return message
     except TimeoutException:
         return None
-    
+
 
 def refresh(window, driver) -> str | None:
     """
@@ -70,7 +70,9 @@ def refresh(window, driver) -> str | None:
     try:
         balance = get_balance(driver)
         if balance is None:
-            raise Exception("Balance retrieval failed: None returned from get_balance()")
+            raise Exception(
+                "Balance retrieval failed: None returned from get_balance()"
+            )
         balance = balance.replace(",", "")[:-1]
 
         window.ui.lcdNumber_balance.setProperty("value", int(balance))
@@ -78,7 +80,7 @@ def refresh(window, driver) -> str | None:
         return True
     except Exception:
         return False
-    
+
 
 def buy(window, driver) -> None:
     """
@@ -90,7 +92,9 @@ def buy(window, driver) -> None:
     wait = WebDriverWait(driver, 10)
     balance = window.ui.lcdNumber_balance.value()
     if int(balance) <= 0:
-        QMessageBox.warning(window, "예치금 부족", "예치금이 부족합니다. 충전 후 다시 시도해주세요.")
+        QMessageBox.warning(
+            window, "예치금 부족", "예치금이 부족합니다. 충전 후 다시 시도해주세요."
+        )
         return
 
     try:
@@ -112,9 +116,13 @@ def buy(window, driver) -> None:
         display_value = buy_report.value_of_css_property("display")
 
         if display_value == "none":
-            fail_element = driver.find_element(By.CSS_SELECTOR, "#recommend720Plus > div > div.status > p.cont1")
+            fail_element = driver.find_element(
+                By.CSS_SELECTOR, "#recommend720Plus > div > div.status > p.cont1"
+            )
             if not fail_element.text:
-                fail_element = driver.find_element(By.CSS_SELECTOR, "#popupLayerAlert > div > div.noti > span")
+                fail_element = driver.find_element(
+                    By.CSS_SELECTOR, "#popupLayerAlert > div > div.noti > span"
+                )
 
             QMessageBox.warning(window, "구매 실패", fail_element.text)
             return
@@ -125,7 +133,7 @@ def buy(window, driver) -> None:
                     window, "구매 실패", "구매 내역을 가져올 수 없습니다."
                 )
                 return
-            
+
             QMessageBox.information(window, "구매 성공", message)
             refresh(window, driver)
     except (TimeoutException, NoSuchElementException) as e:
@@ -160,6 +168,7 @@ def login(window, driver) -> None:
 
             driver.execute_script("check_if_Valid3();")
             import time
+
             time.sleep(1)
 
             alert_text = handle_alert(driver)
@@ -186,6 +195,7 @@ def login(window, driver) -> None:
 
     if not window.ui.pushButton_buy.isEnabled():
         QMessageBox.information(
-            window, "예치금", 
-            "예치금이 부족하여 구매할 수 없습니다.\n상단 메뉴에서 충전 후 시도해 주세요."
+            window,
+            "예치금",
+            "예치금이 부족하여 구매할 수 없습니다.\n상단 메뉴에서 충전 후 시도해 주세요.",
         )
