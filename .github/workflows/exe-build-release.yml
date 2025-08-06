@@ -1,4 +1,4 @@
-name: build-release
+name: exe-build-release
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 jobs:
-  build-and-release:
+  build:
     runs-on: windows-latest
 
     steps:
@@ -33,13 +33,37 @@ jobs:
       - name: Build with pyinstaller
         run: uv run pyinstaller atlottery.spec
 
-      - name: Archive build output
+      - name: Archive release file
         run: |
           mkdir release
           xcopy /E /I dist release
           Compress-Archive -Path release\* -DestinationPath atlottery.zip
 
-      - name: Upload release to GitHub
+      - name: Upload archive file
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-file
+          path: atlottery.zip
+
+
+  release:
+    runs-on: windows-latest
+    needs:
+      - build
+    permissions:
+      id-token: write
+
+    environment:
+      name: pypi
+
+    steps:
+      - name: Retrieve release file
+        uses: actions/download-artifact@v4
+        with:
+          name: release-file
+          path: atlottery.zip
+
+      - name: Release to GitHub
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.tag_name }}
