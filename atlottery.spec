@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['main.py'],
+    ['gui_app.py'],
     pathex=[],
     binaries=[],
     datas=[('resources/*', 'resources')],

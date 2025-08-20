@@ -31,11 +31,31 @@ This is a Korean automatic lottery purchase program. Built with a PySide6-based 
 
 ## Usage
 
-### Run the Application
+### Run Script (Background)
 
 ```bash
-uv run python main.py.
+uv run python cli_app.py
 ```
+
+- Executes the lottery automation script without opening the GUI.
+- Uses environment variables for configuration:
+  - `LOTTERY_USER` → Lottery account ID
+  - `LOTTERY_PASS` → Lottery account password
+  - `LOTTERY_COUNT` → Number of tickets to purchase (default: 5)
+  - `EMAIL_SENDER` → Email account for sending notifications (optional)
+  - `EMAIL_PASSWORD` → Password for the email account (required if `EMAIL_SENDER` is set)
+    - For Gmail, you can use an **App Password** generated here: https://myaccount.google.com/apppasswords
+    - If both `EMAIL_SENDER` and `EMAIL_PASSWORD` are provided, the script can send email notifications about the purchase result.
+- Suitable for running in the background or scheduled tasks.
+
+### Run GUI (Executable)
+
+```bash
+uv run python gui_app.py
+```
+
+- Launches the GUI for interactive use.
+- Make sure the required resource files are correctly placed.
 
 ### Build Executable
 
