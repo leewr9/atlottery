@@ -1,4 +1,4 @@
-name: auto-purchase
+name: weekly-purchase
 
 on:
   schedule:
