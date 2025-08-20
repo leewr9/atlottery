@@ -12,9 +12,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 import app.core.lottery_bot as bot
 
-LOTTERY_USER: str = os.getenv("LOTTERY_USER", None)
-LOTTERY_PASS: str = os.getenv("LOTTERY_PASS", None)
-LOTTERY_COUNT: int = int(os.getenv("LOTTERY_COUNT", 5))
+LOTTERY_USER = os.getenv("LOTTERY_USER", None)
+LOTTERY_PASS = os.getenv("LOTTERY_PASS", None)
+LOTTERY_COUNT = int(os.getenv("LOTTERY_COUNT", 5))
 
 EMAIL_SENDER = os.getenv("EMAIL_SENDER", None)
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD", None)
