@@ -3,7 +3,7 @@
 [![releases](https://img.shields.io/github/v/release/leewr9/atlottery)](https://github.com/leewr9/atlottery/releases)
 [![exe-build-release](https://github.com/leewr9/atlottery/actions/workflows/exe-build-release.yml/badge.svg)](https://github.com/leewr9/atlottery/actions/workflows/exe-build-release.yml)
 
-This is a Korean automatic lottery purchase program. Built with a PySide6-based GUI and Selenium, it enables automatic lottery ticket purchasing without the need for a separate web browser.
+This tool automates Korean lottery ticket purchases, providing both a PySide6-based GUI for interactive use and a command-line script for headless execution, allowing users to buy tickets automatically without opening a web browser.
 
 ![main](resources/main.png)
 
