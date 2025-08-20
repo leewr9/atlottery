@@ -194,10 +194,12 @@ def login(driver, user_id: str, password: str) -> tuple[bool, str]:
     try:
         driver.get("https://www.dhlottery.co.kr/user.do?method=login&returnUrl=")
 
-        driver.find_element(By.NAME, "userId").clear()
-        driver.find_element(By.NAME, "userId").send_keys(user_id)
-        driver.find_element(By.NAME, "password").send_keys(password)
+        wait = WebDriverWait(driver, 10) 
+        user_input = wait.until(EC.presence_of_element_located((By.NAME, "userId")))
+        user_input.clear()
+        user_input.send_keys(user_id)
 
+        driver.find_element(By.NAME, "password").send_keys(password)
         driver.execute_script("check_if_Valid3();")
 
         import time
