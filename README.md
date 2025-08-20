@@ -46,7 +46,8 @@ uv run python cli_app.py
   - `EMAIL_PASSWORD` → Password for the email account (required if `EMAIL_SENDER` is set)
     - For Gmail, you can use an **App Password** generated here: https://myaccount.google.com/apppasswords
     - If both `EMAIL_SENDER` and `EMAIL_PASSWORD` are provided, the script can send email notifications about the purchase result.
-- Suitable for running in the background or scheduled tasks.
+- Suitable for running in the background, scheduled tasks, or automated execution in GitHub Actions workflows.
+  - [example workflow](https://github.com/leewr9/atlottery/blob/master/.github/workflows/weekly-purchase.yml)
 
 ### Run GUI (Executable)
 
