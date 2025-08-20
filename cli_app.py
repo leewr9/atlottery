@@ -109,7 +109,7 @@ def notify_failure(message: str) -> bool:
   </body>
 </html>
 """
-    return notify_email("[동행복권 자동구매] 구매 실패 안내", html_body)
+    return not notify_email("[동행복권 자동구매] 구매 실패 안내", html_body)
 
 
 def main(driver: webdriver.Chrome) -> bool:
