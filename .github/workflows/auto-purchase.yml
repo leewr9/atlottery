@@ -1,4 +1,4 @@
-name: auto-purchase.yml
+name: auto-purchase
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  purchase:
     runs-on: ubuntu-latest
 
     steps:
