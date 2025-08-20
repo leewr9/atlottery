@@ -58,9 +58,12 @@ def get_history(driver) -> str | None:
     Returns:
         Purchase history as a formatted string, or None if retrieval fails.
     """
-    history_message = ""
-
     try:
+        history_message = f"로또 6/45 - {driver.find_element(
+            By.CSS_SELECTOR, "div.date-info h3 strong"
+        ).text}\n"
+        history_message += "\n"
+
         for history_item in driver.find_elements(
             By.CSS_SELECTOR, "div.date-info ul li"
         ):
@@ -70,17 +73,17 @@ def get_history(driver) -> str | None:
         purchased_numbers = driver.find_elements(
             By.CSS_SELECTOR, "div.selected ul li .nums"
         )
+
+        history_numbers = []
         for i, number_group in enumerate(purchased_numbers):
-            numbers = []
+            numbers = [chr(65 + i)]
             for span in number_group.find_elements(By.TAG_NAME, "span"):
                 num = int(span.text)
                 if num not in numbers:
                     numbers.append(num)
+            history_numbers.append(numbers)
 
-            label = chr(65 + i)
-            line = "   ".join(f"{num:>3}" for num in numbers)
-            history_message += f"{label}      {line}      \n"
-        return history_message
+        return history_message, history_numbers
     except TimeoutException:
         return None
 
@@ -107,7 +110,7 @@ def refresh_balance(driver) -> str | None:
         return None
 
 
-def buy_lottery(driver, ticket_count: int) -> tuple[bool, str]:
+def buy_lottery(driver, ticket_count: int) -> tuple[bool, str, list]:
     """
     Purchase a specified number of lottery tickets.
 
@@ -147,15 +150,15 @@ def buy_lottery(driver, ticket_count: int) -> tuple[bool, str]:
                 error_element = driver.find_element(
                     By.CSS_SELECTOR, "#popupLayerAlert > div > div.noti > span"
                 )
-            return False, error_element.text
+            return False, error_element.text, []
         else:
-            history_message = get_history(driver)
-            if history_message is None:
-                return False, "구매 내역을 가져올 수 없습니다."
+            message, numbers = get_history(driver)
+            if message is None:
+                return False, "구매 내역을 가져올 수 없습니다.", []
 
-            return True, history_message
+            return True, message, numbers
     except (TimeoutException, NoSuchElementException) as e:
-        return False, str(e)
+        return False, str(e), []
 
 
 def logout(driver) -> tuple[bool, str]:
