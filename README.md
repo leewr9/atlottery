@@ -10,6 +10,7 @@ This tool automates Korean lottery ticket purchases, providing both a PySide6-ba
 ## Feature
 
 - Simple GUI built with PySide6
+- Command-line script for headless execution
 - Automated lottery purchase using Selenium
 - No external web browser required
 - Supports executable build with PyInstaller
