@@ -1,3 +1,4 @@
+from datetime import datetime
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
@@ -48,7 +49,7 @@ def get_balance(driver) -> str | None:
         return None
 
 
-def get_history(driver) -> str | None:
+def get_history(driver) -> tuple[str, list]:
     """
     Fetch the purchase history of lottery tickets.
 
@@ -59,6 +60,21 @@ def get_history(driver) -> str | None:
         Purchase history as a formatted string, or None if retrieval fails.
     """
     try:
+        buy_date = datetime.now().strftime("%Y%m%d")
+        driver.get(
+            f"https://www.dhlottery.co.kr/myPage.do?method=lottoBuyList&searchStartDate={buy_date}"
+        )
+
+        barcodes = driver.find_elements(
+            By.CSS_SELECTOR, "table.tbl_data_col tbody tr td a .color_key1 "
+        )
+        if not barcodes:
+            return None, []
+
+        buy_barcode = barcodes[0].text.split(" ")
+        url = f"https://www.dhlottery.co.kr/myPage.do?method=lotto645Detail&orderNo={buy_date}&barcode={''.join(buy_barcode)}&issueNo=1"
+        driver.get(url)
+
         history_message = f"로또 6/45 - {driver.find_element(
             By.CSS_SELECTOR, "div.date-info h3 strong"
         ).text}\n"
@@ -85,7 +101,7 @@ def get_history(driver) -> str | None:
 
         return history_message, history_numbers
     except TimeoutException:
-        return None
+        return None, []
 
 
 def refresh_balance(driver) -> str | None:
@@ -110,7 +126,7 @@ def refresh_balance(driver) -> str | None:
         return None
 
 
-def buy_lottery(driver, ticket_count: int) -> tuple[bool, str, list]:
+def buy_lottery(driver, ticket_count: int) -> tuple[bool, str]:
     """
     Purchase a specified number of lottery tickets.
 
@@ -150,13 +166,9 @@ def buy_lottery(driver, ticket_count: int) -> tuple[bool, str, list]:
                 error_element = driver.find_element(
                     By.CSS_SELECTOR, "#popupLayerAlert > div > div.noti > span"
                 )
-            return False, error_element.text, []
-        else:
-            message, numbers = get_history(driver)
-            if message is None:
-                return False, "구매 내역을 가져올 수 없습니다.", []
+            return False, error_element.text
 
-            return True, message, numbers
+        return True, "Buy successful"
     except (TimeoutException, NoSuchElementException) as e:
         return False, str(e), []
 
@@ -194,7 +206,7 @@ def login(driver, user_id: str, password: str) -> tuple[bool, str]:
     try:
         driver.get("https://www.dhlottery.co.kr/user.do?method=login&returnUrl=")
 
-        wait = WebDriverWait(driver, 10) 
+        wait = WebDriverWait(driver, 10)
         user_input = wait.until(EC.presence_of_element_located((By.NAME, "userId")))
         user_input.clear()
         user_input.send_keys(user_id)
