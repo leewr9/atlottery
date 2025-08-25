@@ -112,12 +112,20 @@ class MainWindow(QMainWindow):
             self.driver, self.ui.spinBox_count.text()
         )
         if result:
-            for number in numbers:
-                line = "   ".join(f"{num:>3}" for num in number[1:])
-                message += f"{number[0]}      {line}      \n"
-            QMessageBox.information(
-                self, "구매 성공", f"구매하신 번호는 다음과 같습니다.\n\n{message}"
-            )
+            message, numbers = bot.get_history(driver)
+            if message and numbers:
+                for number in numbers:
+                    line = "   ".join(f"{num:>3}" for num in number[1:])
+                    message += f"{number[0]}      {line}      \n"
+                QMessageBox.information(
+                    self, "구매 성공", f"구매하신 번호는 다음과 같습니다.\n\n{message}"
+                )
+            else:
+                QMessageBox.warning(
+                    self,
+                    "구매 내역",
+                    "구매 내역을 가져올 수 없습니다.\n동행복권 홈페이지에서 확인해 주세요.",
+                )
             self.refresh_ui()
         else:
             QMessageBox.warning(

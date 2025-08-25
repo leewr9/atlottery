@@ -137,10 +137,20 @@ def main(driver: webdriver.Chrome) -> bool:
         print(f"Balance check completed: {balance}")
 
         print(f"Attempting to purchase {LOTTERY_COUNT} lottery tickets...")
-        result, message, numbers = bot.buy_lottery(driver, LOTTERY_COUNT)
+        result, message = bot.buy_lottery(driver, LOTTERY_COUNT)
+
         if result:
-            print("Lotto purchase successful")
-            return notify_success(message, numbers, balance)
+            message, numbers = bot.get_history(driver)
+            if message and numbers:
+                print("Lotto purchase successful")
+                return notify_success(message, numbers, balance)
+            else:
+                print("Cannot retrieve purchase history.")
+                return notify_success(
+                    "구매 내역을 불러올 수 없습니다.\n동행복권 홈페이지에서 확인해 주세요.",
+                    numbers,
+                    balance,
+                )
         else:
             print(f"Lotto purchase failed: {message}")
             return notify_failure(message)
