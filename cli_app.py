@@ -140,6 +140,7 @@ def main(driver: webdriver.Chrome) -> bool:
         result, message = bot.buy_lottery(driver, LOTTERY_COUNT)
 
         if result:
+            balance = bot.refresh_balance(driver)
             message, numbers = bot.get_history(driver)
             if message and numbers:
                 print("Lotto purchase successful")
