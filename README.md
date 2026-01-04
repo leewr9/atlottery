@@ -4,6 +4,8 @@
 [![exe-build-release](https://github.com/leewr9/atlottery/actions/workflows/exe-build-release.yml/badge.svg)](https://github.com/leewr9/atlottery/actions/workflows/exe-build-release.yml)
 [![weekly-purchase](https://github.com/leewr9/atlottery/actions/workflows/weekly-purchase.yml/badge.svg)](https://github.com/leewr9/atlottery/actions/workflows/weekly-purchase.yml)
 
+> **⚠️ Notice**: As of 2026, this tool is no longer functional due to website changes. Currently under maintenance.
+
 This tool automates Korean lottery ticket purchases, providing both a PySide6-based GUI for interactive use and a command-line script for headless execution, allowing users to buy tickets automatically without opening a web browser.
 
 ![main](resources/main.png)
