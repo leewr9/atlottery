@@ -38,12 +38,13 @@ def get_balance(driver) -> str | None:
     Returns:
         Balance as a string, or None if retrieval fails.
     """
-    driver.get("https://www.dhlottery.co.kr/common.do?method=main")
+    driver.get("https://www.dhlottery.co.kr/mypage/home")
     wait = WebDriverWait(driver, 10)
     try:
         balance_element = wait.until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "li.money a strong"))
+            EC.presence_of_element_located((By.ID, "totalAmt"))
         )
+        print("Balance element found:", balance_element.text)
         return balance_element.text
     except TimeoutException:
         return None
@@ -120,7 +121,7 @@ def refresh_balance(driver) -> str | None:
             raise Exception(
                 "Balance retrieval failed: None returned from get_balance()."
             )
-        cleaned_balance = balance_text.replace(",", "")[:-1]
+        cleaned_balance = balance_text.replace(",", "")
         return cleaned_balance
     except Exception:
         return None
@@ -137,7 +138,7 @@ def buy_lottery(driver, ticket_count: int) -> tuple[bool, str]:
     Returns:
         Tuple of (success flag, message or error).
     """
-    driver.get("https://ol.dhlottery.co.kr/olotto/game/game645.do")
+    driver.get("https://el.dhlottery.co.kr/game/TotalGame.jsp?LottoId=LO40")
 
     try:
         wait = WebDriverWait(driver, 10)
@@ -204,15 +205,15 @@ def login(driver, user_id: str, password: str) -> tuple[bool, str]:
         Tuple of (success flag, message or error).
     """
     try:
-        driver.get("https://www.dhlottery.co.kr/user.do?method=login&returnUrl=")
+        driver.get("https://www.dhlottery.co.kr/login")
 
         wait = WebDriverWait(driver, 10)
-        user_input = wait.until(EC.presence_of_element_located((By.NAME, "userId")))
+        user_input = wait.until(EC.presence_of_element_located((By.ID, "inpUserId")))
         user_input.clear()
         user_input.send_keys(user_id)
 
-        driver.find_element(By.NAME, "password").send_keys(password)
-        driver.execute_script("check_if_Valid3();")
+        driver.find_element(By.ID, "inpUserPswdEncn").send_keys(password)
+        driver.execute_script("login();")
 
         import time
 
