@@ -142,6 +142,15 @@ def buy_lottery(driver, ticket_count: int) -> tuple[bool, str]:
 
     try:
         wait = WebDriverWait(driver, 10)
+        purchase_element = wait.until(
+            EC.presence_of_element_located((By.ID, "crntPrchsAcmlAmt"))
+        )
+        if purchase_element is None:
+            raise Exception("Reload button not found.")
+        print("Purchase element found:", purchase_element.text)
+
+        driver.get("https://ol.dhlottery.co.kr/olotto/game/game645.do")
+        
         auto_button = wait.until(EC.element_to_be_clickable((By.ID, "num2")))
         driver.execute_script("arguments[0].click();", auto_button)
 
