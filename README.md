@@ -1,5 +1,7 @@
 # AutoLottery
 
+> **⚠️ Notice**: As of 2026, this tool is no longer functional due to website changes. Currently under maintenance.
+
 [![releases](https://img.shields.io/github/v/release/leewr9/atlottery)](https://github.com/leewr9/atlottery/releases)
 [![exe-build-release](https://github.com/leewr9/atlottery/actions/workflows/exe-build-release.yml/badge.svg)](https://github.com/leewr9/atlottery/actions/workflows/exe-build-release.yml)
 [![weekly-purchase](https://github.com/leewr9/atlottery/actions/workflows/weekly-purchase.yml/badge.svg)](https://github.com/leewr9/atlottery/actions/workflows/weekly-purchase.yml)
