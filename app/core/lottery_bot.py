@@ -146,7 +146,7 @@ def buy_lottery(driver, ticket_count: int) -> tuple[bool, str]:
             EC.presence_of_element_located((By.ID, "crntPrchsAcmlAmt"))
         )
         if purchase_element is None:
-            raise Exception("Reload button not found.")
+            raise Exception("Reload purchase amount element is None.")
         print("Purchase element found:", purchase_element.text)
 
         driver.get("https://ol.dhlottery.co.kr/olotto/game/game645.do")
